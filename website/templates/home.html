@@ -31,7 +31,7 @@
         <td>{{ record.position }}</td>
         <td>{{ record.created_at }}</td>
         <td>{{ record.note }}</td>
-        <td><a href="{% url 'record' record.id %}"><button type="button" class="btn btn-secondary">View</button></a></td>
+        <td><a href="{% url 'equipment' record.id %}"><button type="button" class="btn btn-secondary">View</button></a></td>
         
     </tr>
   {% endfor %}

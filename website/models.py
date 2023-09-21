@@ -1,7 +1,6 @@
 from django.db import models
 
-#The database model
-
+# Table containing the users
 class Record(models.Model):
 	first_name=models.CharField(max_length=50)
 	last_name=models.CharField(max_length=50)
@@ -12,3 +11,21 @@ class Record(models.Model):
 
 	def __str__(self):
 		return(f"{self.first_name} {self.last_name}")
+
+#Table containing the equipent
+class Equipment(models.Model):
+	record = models.ForeignKey(Record, on_delete=models.CASCADE)
+	hwtype = models.CharField(max_length=50)
+	vendor = models.CharField(max_length=50)
+	model = models.CharField(max_length=50)
+	stag = models.CharField(max_length=50, blank=True)
+	location = models.CharField(max_length=50, blank=True)
+	status = models.CharField(max_length=50)
+	pdate = models.DateTimeField(max_length=50) #Date of purchase
+	name = models.CharField(max_length=50, blank=True)
+	licence = models.CharField(max_length=50, blank=True)
+	rdate = models.DateTimeField(max_length=50) # Date of registration
+	company = models.CharField(max_length=50)
+
+	def __str__(self):
+		return(f"{self.id}")

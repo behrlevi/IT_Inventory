@@ -2,9 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from .forms import SignUpForm, AddRecordForm
-from .models import Record
-
-# Create your views here.
+from .models import Record, Equipment
 
 def home(request):
 	records = Record.objects.all()
@@ -93,3 +91,8 @@ def edit_record(request, pk):
 	else:
 		messages.success(request, "You must be logged in")
 		return redirect('home')
+
+def list_equipment(request, pk):
+	record = Record.objects.get(id=pk)
+	equipments = Equipment.objects.filter(record=record)
+	return render(request, 'equipment.html', {'equipments': equipments, 'record': record})
