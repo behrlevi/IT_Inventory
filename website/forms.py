@@ -1,7 +1,8 @@
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django import forms
-from .models import Record
+from .models import Record, Equipment
+from django.forms import modelformset_factory
 
 
 class SignUpForm(UserCreationForm):
@@ -48,3 +49,30 @@ class AddRecordForm(forms.ModelForm):
 	class Meta:
 		model=Record
 		exclude=("user",)
+
+
+class AddEquipmentForm(forms.ModelForm):
+
+	def __init__(self, *args, **kwargs):
+		super(AddEquipmentForm, self).__init__(*args, **kwargs)
+		self.fields['hwtype'].widget.attrs.update({'class': 'form-control form-control-sm'})
+		self.fields['vendor'].widget.attrs.update({'class': 'form-control form-control-sm'})
+		self.fields['model'].widget.attrs.update({'class': 'form-control form-control-sm'})
+		self.fields['stag'].widget.attrs.update({'class': 'form-control form-control-sm'})
+		self.fields['location'].widget.attrs.update({'class': 'form-control form-control-sm'})
+		self.fields['status'].widget.attrs.update({'class': 'form-control form-control-sm'})
+		self.fields['pdate'].widget.attrs.update({'class': 'form-control form-control-sm'})
+		self.fields['name'].widget.attrs.update({'class': 'form-control form-control-sm'})
+		self.fields['licence'].widget.attrs.update({'class': 'form-control form-control-sm'})
+		self.fields['company'].widget.attrs.update({'class': 'form-control form-control-sm'})
+
+	class Meta:
+		model=Equipment
+		fields = '__all__'
+
+
+EquipmentFormSet = modelformset_factory(
+    Equipment,
+    form=AddEquipmentForm,
+    fields=('hwtype', 'vendor', 'model', 'stag', 'location', 'status', 'pdate', 'name', 'licence', 'company')
+)

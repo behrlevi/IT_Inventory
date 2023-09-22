@@ -1,8 +1,10 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
-from .forms import SignUpForm, AddRecordForm
+from .forms import SignUpForm, AddRecordForm, AddEquipmentForm, EquipmentFormSet
 from .models import Record, Equipment
+from django.forms import modelformset_factory
+
 
 def home(request):
 	records = Record.objects.all()
@@ -79,15 +81,40 @@ def add_record(request):
 		messages.success(request, "You must be logged in")
 		return redirect('home')
 
-def edit_record(request, pk):
+def edit_equipment(request, pk):
 	if request.user.is_authenticated:
-		current_record=Record.objects.get(id=pk)
-		form=AddRecordForm(request.POST or None, instance=current_record)
-		if form.is_valid():
-			form.save()
-			messages.success(request, "Record has been updated.")
-			return redirect('home')
-		return render(request, 'edit_record.html', {'form':form})
+		user_record = get_object_or_404(Record, pk=pk)
+		user_equipment = Equipment.objects.filter(record=user_record)
+		EquipmentFormSet = modelformset_factory(Equipment, form=AddEquipmentForm, extra=len(user_equipment))
+
+		if request.method=='POST':
+			formset=EquipmentFormSet(request.POST, queryset=user_equipment)
+			if formset.is_valid():
+				print(formset.cleaned_data)
+				formset.save()
+				messages.success(request, "Record has been updated.")
+				return redirect('home')
+		else:
+			formset = EquipmentFormSet(queryset=user_equipment)
+
+			
+			for form in formset:
+				form.fields['hwtype'].widget.attrs.update({'class': 'form-control form-control-sm'})
+				form.fields['vendor'].widget.attrs.update({'class': 'form-control form-control-sm'})
+				form.fields['model'].widget.attrs.update({'class': 'form-control form-control-sm'})
+				form.fields['stag'].widget.attrs.update({'class': 'form-control form-control-sm'})
+				form.fields['location'].widget.attrs.update({'class': 'form-control form-control-sm'})
+				form.fields['status'].widget.attrs.update({'class': 'form-control form-control-sm'})
+				form.fields['pdate'].widget.attrs.update({'class': 'form-control form-control-sm'})
+				form.fields['licence'].widget.attrs.update({'class': 'form-control form-control-sm'})
+				form.fields['company'].widget.attrs.update({'class': 'form-control form-control-sm'})
+				
+
+		context = {
+        	'user_record': user_record,
+        	'formset': formset,
+    	}
+		return render(request, 'edit_equipment.html', context)
 	else:
 		messages.success(request, "You must be logged in")
 		return redirect('home')

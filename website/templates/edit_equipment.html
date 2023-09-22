@@ -1,0 +1,49 @@
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+<div class="container-xl">
+<h2>Edit Equipment</h2>
+
+<form method="post" class="my-4">
+    {% csrf_token %}
+    {{ formset.management_form }}
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Hardware Type</th>
+                <th>Vendor</th>
+                <th>Model</th>
+                <th>Service Tag</th>
+                <th>Location</th>
+                <th>Status</th>
+                <th>Purchase Date</th>
+                <th>Licences</th>
+                <th>Company</th>
+                
+            </tr>
+        </thead>
+        <tbody>
+            {% for form in formset %}
+            	{% if form.instance.pk %}
+                <tr>
+                    <td>{{ form.hwtype }}</td>
+                    <td>{{ form.vendor }}</td>
+                    <td>{{ form.model }}</td>
+                    <td>{{ form.stag }}</td>
+                    <td>{{ form.location }}</td>
+                    <td>{{ form.status }}</td>
+                    <td>{{ form.pdate }}</td>
+                    <td>{{ form.licence }}</td>
+                    <td>{{ form.company }}</td>
+                </tr>
+                {%endif %}
+            {% endfor %}
+        </tbody>
+    </table>
+    <button type="submit" class="btn btn-primary">Save Changes</button>
+    <a href="{% url 'home' %}" class="btn btn-secondary">Back</a>
+</form>
+
+</div>
+
+
+

@@ -24,7 +24,7 @@ class Equipment(models.Model):
 	pdate = models.DateTimeField(max_length=50) #Date of purchase
 	name = models.CharField(max_length=50, blank=True)
 	licence = models.CharField(max_length=50, blank=True)
-	rdate = models.DateTimeField(max_length=50) # Date of registration
+	rdate = models.DateTimeField(auto_now_add=True) # Date of registration
 	company = models.CharField(max_length=50)
 
 	def __str__(self):

@@ -18,6 +18,7 @@
       <th scope="col">Position</th>
       <th scope="col">Created</th>
       <th scope="col">Note</th>
+      <th scope="col">View</th>
     </tr>
   </thead>
   <tbody>
@@ -31,7 +32,7 @@
         <td>{{ record.position }}</td>
         <td>{{ record.created_at }}</td>
         <td>{{ record.note }}</td>
-        <td><a href="{% url 'equipment' record.id %}"><button type="button" class="btn btn-secondary">View</button></a></td>
+        <td><a href="{% url 'equipment' record.id %}"><button type="button" class="btn btn-secondary">Equipment</button></a></td>
         
     </tr>
   {% endfor %}
