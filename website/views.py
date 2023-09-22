@@ -90,7 +90,6 @@ def edit_equipment(request, pk):
 		if request.method=='POST':
 			formset=EquipmentFormSet(request.POST, queryset=user_equipment)
 			if formset.is_valid():
-				print(formset.cleaned_data)
 				formset.save()
 				messages.success(request, "Record has been updated.")
 				return redirect('home')
