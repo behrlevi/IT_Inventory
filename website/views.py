@@ -93,6 +93,8 @@ def edit_equipment(request, pk):
 				formset.save()
 				messages.success(request, "Record has been updated.")
 				return redirect('home')
+			else:
+				print(formset.errors)
 		else:
 			formset = EquipmentFormSet(queryset=user_equipment)
 

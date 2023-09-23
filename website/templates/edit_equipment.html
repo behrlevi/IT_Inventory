@@ -9,6 +9,7 @@
     <table class="table">
         <thead>
             <tr>
+                <th></th>
                 <th>Hardware Type</th>
                 <th>Vendor</th>
                 <th>Model</th>
@@ -18,6 +19,7 @@
                 <th>Purchase Date</th>
                 <th>Licences</th>
                 <th>Company</th>
+                <th>Change Owner</th>
                 
             </tr>
         </thead>
@@ -25,6 +27,7 @@
             {% for form in formset %}
             	{% if form.instance.pk %}
                 <tr>
+                    <td>{{ form.id }}</td>
                     <td>{{ form.hwtype }}</td>
                     <td>{{ form.vendor }}</td>
                     <td>{{ form.model }}</td>
@@ -34,13 +37,14 @@
                     <td>{{ form.pdate }}</td>
                     <td>{{ form.licence }}</td>
                     <td>{{ form.company }}</td>
+                    <td>{{ form.record }}</td>
                 </tr>
                 {%endif %}
             {% endfor %}
         </tbody>
     </table>
     <button type="submit" class="btn btn-primary">Save Changes</button>
-    <a href="{% url 'home' %}" class="btn btn-secondary">Back</a>
+    <a href="{% url 'equipment' pk %}" class="btn btn-secondary">Back</a>
 </form>
 
 </div>
