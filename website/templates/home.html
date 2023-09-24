@@ -30,7 +30,7 @@
         <td>{{ record.last_name }}</td>
         <td>{{ record.company }}</td>
         <td>{{ record.position }}</td>
-        <td>{{ record.created_at }}</td>
+        <td>{{ record.created_at|date:"Y.m.d H:i" }}</td>
         <td>{{ record.note }}</td>
         <td><a href="{% url 'equipment' record.id %}"><button type="button" class="btn btn-secondary">Equipment</button></a></td>
         
