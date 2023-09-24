@@ -39,22 +39,19 @@ class SignUpForm(UserCreationForm):
 class AddRecordForm(forms.ModelForm):
 	first_name=forms.CharField(required=True, widget=forms.widgets.TextInput(attrs={"placeholder": "First Name", "class":"form-control"}), label="")
 	last_name=forms.CharField(required=True, widget=forms.widgets.TextInput(attrs={"placeholder": "Last Name","class":"form-control"}), label="")
-	email=forms.CharField(required=True, widget=forms.widgets.TextInput(attrs={"placeholder": "E-mail","class":"form-control"}), label="")
-	phone=forms.CharField(required=True, widget=forms.widgets.TextInput(attrs={"placeholder": "Phone","class":"form-control"}), label="")
-	address=forms.CharField(required=True, widget=forms.widgets.TextInput(attrs={"placeholder": "Address","class":"form-control"}), label="")
-	city=forms.CharField(required=True, widget=forms.widgets.TextInput(attrs={"placeholder": "City","class":"form-control"}), label="")
-	state=forms.CharField(required=True, widget=forms.widgets.TextInput(attrs={"placeholder": "State","class":"form-control"}), label="")
-	zipcode=forms.CharField(required=True, widget=forms.widgets.TextInput(attrs={"placeholder": "Zipcode","class":"form-control"}), label="")
+	company=forms.CharField(required=True, widget=forms.widgets.TextInput(attrs={"placeholder": "Company","class":"form-control"}), label="")
+	position=forms.CharField(required=True, widget=forms.widgets.TextInput(attrs={"placeholder": "Position","class":"form-control"}), label="")
+	note=forms.CharField(required=True, widget=forms.widgets.TextInput(attrs={"placeholder": "Note","class":"form-control"}), label="")
 
 	class Meta:
 		model=Record
 		exclude=("user",)
 
 
-class AddEquipmentForm(forms.ModelForm):
+class EditEquipmentForm(forms.ModelForm):
 
 	def __init__(self, *args, **kwargs):
-		super(AddEquipmentForm, self).__init__(*args, **kwargs)
+		super(EditEquipmentForm, self).__init__(*args, **kwargs)
 		self.fields['hwtype'].widget.attrs.update({'class': 'form-control form-control-sm'})
 		self.fields['vendor'].widget.attrs.update({'class': 'form-control form-control-sm'})
 		self.fields['model'].widget.attrs.update({'class': 'form-control form-control-sm'})
@@ -73,6 +70,6 @@ class AddEquipmentForm(forms.ModelForm):
 
 EquipmentFormSet = modelformset_factory(
     Equipment,
-    form=AddEquipmentForm,
+    form=EditEquipmentForm,
     fields=('hwtype', 'vendor', 'model', 'stag', 'location', 'status', 'pdate', 'name', 'licence', 'company')
 )

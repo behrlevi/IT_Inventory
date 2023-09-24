@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
-from .forms import SignUpForm, AddRecordForm, AddEquipmentForm, EquipmentFormSet
+from .forms import SignUpForm, AddRecordForm, EditEquipmentForm, EquipmentFormSet
 from .models import Record, Equipment
 from django.forms import modelformset_factory
 
@@ -85,13 +85,13 @@ def edit_equipment(request, pk):
 	if request.user.is_authenticated:
 		user_record = get_object_or_404(Record, pk=pk)
 		user_equipment = Equipment.objects.filter(record=user_record)
-		EquipmentFormSet = modelformset_factory(Equipment, form=AddEquipmentForm, extra=len(user_equipment))
+		EquipmentFormSet = modelformset_factory(Equipment, form=EditEquipmentForm, extra=len(user_equipment))
 
 		if request.method=='POST':
 			formset=EquipmentFormSet(request.POST, queryset=user_equipment)
 			if formset.is_valid():
 				formset.save()
-				messages.success(request, "Record has been updated.")
+				messages.success(request, "Equipment list has been updated.")
 				return redirect('home')
 			else:
 				print(formset.errors)
@@ -124,3 +124,29 @@ def list_equipment(request, pk):
 	record = Record.objects.get(id=pk)
 	equipments = Equipment.objects.filter(record=record)
 	return render(request, 'equipment.html', {'equipments': equipments, 'record': record})
+
+def add_equipment(request, pk):
+	if request.user.is_authenticated:
+		user_record = get_object_or_404(Record, pk=pk)
+		user_equipment = Equipment.objects.filter(record=user_record)
+		EquipmentFormSet = modelformset_factory(Equipment, form=EditEquipmentForm, extra=1)
+
+		if request.method=='POST':
+			formset=EquipmentFormSet(request.POST, queryset=user_record.equipment_set.all())
+			if formset.is_valid():
+				formset.save()
+				messages.success(request, "New equipment has been added.")
+				return redirect('home')
+			else:
+				print(formset.errors)
+		else:
+			formset = EquipmentFormSet(queryset=Equipment.objects.none())
+
+		context = {
+			'user_record': user_record,
+			'formset': formset,
+			}
+		return render(request, 'add_equipment.html', context)
+	else:
+		messages.success(request, "You must be logged in")
+		return redirect('home')
