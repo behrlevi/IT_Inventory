@@ -14,6 +14,12 @@ class Record(models.Model):
 
 #Table containing the equipent
 class Equipment(models.Model):
+
+	companies = (
+		('rossi', 'Rossi Biofuel Zrt.'),
+		('enviral', 'Enviral a.s.')
+		)
+
 	record = models.ForeignKey(Record, on_delete=models.CASCADE)
 	hwtype = models.CharField(max_length=50)
 	vendor = models.CharField(max_length=50)
@@ -25,7 +31,7 @@ class Equipment(models.Model):
 	name = models.CharField(max_length=50, blank=True)
 	licence = models.CharField(max_length=50, blank=True)
 	rdate = models.DateTimeField(auto_now_add=True) # Date of registration
-	company = models.CharField(max_length=50)
+	company = models.CharField(max_length=50, choices=companies, default='rossi')
 
 	def __str__(self):
 		return(f"{self.id}")
