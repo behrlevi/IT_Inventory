@@ -35,7 +35,7 @@
                     <td>{{ form.pdate }}</td>
                     <td>{{ form.licence }}</td>
                     <td>{{ form.company }}</td>
-                    <td>{{ form.record }}</td>
+                    <td class="hidden-td">{{ form.record }}</td>
                 </tr>
             {% endfor %}
         </tbody>
@@ -49,6 +49,11 @@ function goBack() {
 }
 </script>
 
+<style>
+.hidden-td {
+    display: none;
+}
+</style>
 
 </form>
 

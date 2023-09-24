@@ -4,6 +4,7 @@ from django.contrib import messages
 from .forms import SignUpForm, AddRecordForm, EditEquipmentForm, EquipmentFormSet
 from .models import Record, Equipment
 from django.forms import modelformset_factory
+from django.utils import timezone
 
 
 def home(request):
@@ -140,7 +141,9 @@ def add_equipment(request, pk):
 			else:
 				print(formset.errors)
 		else:
-			formset = EquipmentFormSet(queryset=Equipment.objects.none())
+			# Set the initial value for the record field to the primary key (pk) of user_record
+			initial_data = [{ 'company':'ROSSI', 'pdate':timezone.now(), 'record': user_record.pk}]
+			formset = EquipmentFormSet(None, queryset=Equipment.objects.none(), initial=initial_data)
 
 		context = {
 			'user_record': user_record,

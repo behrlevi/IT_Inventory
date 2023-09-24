@@ -21,7 +21,7 @@ class Equipment(models.Model):
 	stag = models.CharField(max_length=50, blank=True)
 	location = models.CharField(max_length=50, blank=True)
 	status = models.CharField(max_length=50)
-	pdate = models.DateTimeField(max_length=50) #Date of purchase
+	pdate = models.DateTimeField(max_length=50, blank=True, null=True) #Date of purchase
 	name = models.CharField(max_length=50, blank=True)
 	licence = models.CharField(max_length=50, blank=True)
 	rdate = models.DateTimeField(auto_now_add=True) # Date of registration
