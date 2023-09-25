@@ -73,3 +73,10 @@ EquipmentFormSet = modelformset_factory(
     form=EditEquipmentForm,
     fields=('hwtype', 'vendor', 'model', 'stag', 'location', 'status', 'pdate', 'name', 'licence', 'company')
 )
+
+class DeleteEquipmentForm(forms.ModelForm):
+    delete = forms.BooleanField(required=False, widget=forms.CheckboxInput(attrs={'class': 'custom-checkbox'}))
+
+    class Meta:
+        model = Equipment
+        fields = '__all__'

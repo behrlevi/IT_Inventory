@@ -20,7 +20,7 @@
                 <th>Licences</th>
                 <th>Company</th>
                 <th>Change Owner</th>
-                
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -38,6 +38,12 @@
                     <td>{{ form.licence }}</td>
                     <td>{{ form.company }}</td>
                     <td>{{ form.record }}</td>
+                    <td>
+                        <form method="post" action="{% url 'delete_equipment' form.instance.pk %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                        </form>
+                    </td>
                 </tr>
                 {%endif %}
             {% endfor %}

@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
-from .forms import SignUpForm, AddRecordForm, EditEquipmentForm, EquipmentFormSet
+from .forms import SignUpForm, AddRecordForm, EditEquipmentForm, EquipmentFormSet, DeleteEquipmentForm
 from .models import Record, Equipment
 from django.forms import modelformset_factory
 from django.utils import timezone
@@ -152,4 +152,15 @@ def add_equipment(request, pk):
 		return render(request, 'add_equipment.html', context)
 	else:
 		messages.success(request, "You must be logged in")
+		return redirect('home')
+
+def delete_equipment(request, pk):
+	if request.user.is_authenticated:
+		item = get_object_or_404(Equipment,pk=pk)
+		if request.method == 'POST':
+			item.delete()
+			messages.success(request, "Equipment deleted successfully.")
+			return redirect('home')
+	else:
+		messages.success(request, "You must be logged in to delete records.")
 		return redirect('home')
