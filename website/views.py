@@ -63,9 +63,9 @@ def customer_record(request, pk):
 def delete_record(request, pk):
     if request.user.is_authenticated:
         # Check if there are any related Equipment objects for the Record
-        record_has_equipment = Record.objects.filter(id=pk).annotate(equipment_count=Count('equipment')).first()
+        record_exists = Record.objects.filter(id=pk).annotate(equipment_count=Count('equipment')).first()
         
-        if record_has_equipment and record_has_equipment.equipment_count > 0:
+        if record_exists and record_exists.equipment_count > 0:
             # Equipment objects are associated with the Record, don't allow deletion
             messages.error(request, "Cannot delete this record because it has associated equipment.")
         else:
