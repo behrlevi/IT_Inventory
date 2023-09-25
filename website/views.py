@@ -5,6 +5,7 @@ from .forms import SignUpForm, AddRecordForm, EditEquipmentForm, EquipmentFormSe
 from .models import Record, Equipment
 from django.forms import modelformset_factory
 from django.utils import timezone
+from django.db.models import Count
 
 
 def home(request):
@@ -60,14 +61,24 @@ def customer_record(request, pk):
 		return redirect('home')
 
 def delete_record(request, pk):
-	if request.user.is_authenticated:
-		delete_it = Record.objects.get(id=pk)
-		delete_it.delete()
-		messages.success(request, "Record deleted successfully.")
-		return redirect('home')
-	else:
-		messages.success(request, "You must be logged in to delete records.")
-		return redirect('home')
+    if request.user.is_authenticated:
+        # Check if there are any related Equipment objects for the Record
+        record_has_equipment = Record.objects.filter(id=pk).annotate(equipment_count=Count('equipment')).first()
+        
+        if record_has_equipment and record_has_equipment.equipment_count > 0:
+            # Equipment objects are associated with the Record, don't allow deletion
+            messages.error(request, "Cannot delete this record because it has associated equipment.")
+        else:
+            # No Equipment objects associated, proceed with deletion
+            record_to_delete = Record.objects.filter(id=pk).first()
+            if record_to_delete:
+                record_to_delete.delete()
+                messages.success(request, "Record deleted successfully.")
+    
+    else:
+        messages.success(request, "You must be logged in to delete records.")
+    
+    return redirect('home')
 
 def add_record(request):
 	form=AddRecordForm(request.POST or None)
@@ -159,8 +170,8 @@ def delete_equipment(request, pk):
 		item = get_object_or_404(Equipment,pk=pk)
 		if request.method == 'POST':
 			item.delete()
-			messages.success(request, "Equipment deleted successfully.")
+			messages.success(request, "Item deleted successfully.")
 			return redirect('home')
 	else:
-		messages.success(request, "You must be logged in to delete records.")
+		messages.success(request, "You must be logged in to delete items.")
 		return redirect('home')
